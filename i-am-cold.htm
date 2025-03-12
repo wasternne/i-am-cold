@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Am Cold</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Comico-Regular';
+            src: url('./fonts/Comico-Regular.woff2') format('woff2'),
+            url('./fonts/Comico-Regular.woff') format('woff'),
+            url('./fonts/Comico-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-display: swap;
+            font-style: normal;
+        }
+
+        html, body {
+            height: 100vh;
+            width: 100vw;
+            padding: 0;
+            margin: 0;
+
+            background-color: #110100;
+            overflow: hidden;
+            color: #ffffff;
+            font-family: "Comico-Regular", sans-serif;
+        }
+
+        .screen {
+            height: 100%;
+            max-width: 50vh;
+            padding: 0;
+            margin: 0 auto;
+
+            container-type: inline-size;
+
+            display: flex;
+            flex-direction: column;
+            gap: 1vh;
+            align-items: center;
+            justify-content: center;
+
+            background-image: url("img/back.webp");
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+
+        .card-container {
+            position: relative;
+        }
+
+        .card-container-movable {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 1vh;
+            font-size: 1.5rem;
+            font-family: "Noto Emoji", sans-serif;
+            text-shadow: 0 0 0.5vh #fff8, 0 0 1vh #f908;
+        }
+
+        .card {
+            flex: 0 0 auto;
+
+            display: flex;
+            flex-direction: column;
+
+            container-type: inline-size;
+
+            background-color: #2c3543;
+            border-radius: 1vh;
+            width: 80cqw;
+            text-align: center;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+            user-select: none;
+            touch-action: none;
+            transition: opacity .5s ease;
+        }
+
+        .pos-transition {
+            transition: opacity .5s ease
+            , transform 1s ease;
+        }
+
+        .card-img-container {
+            width: 100cqw;
+            height: 100cqw;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-img {
+            border-radius: 1vh;
+            background-size: cover;
+            width: 90cqw;
+            height: 90cqw;
+
+            position: relative;
+        }
+
+        .card-border {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+
+            border-radius: 1vh;
+            box-shadow: inset 0 0 1vh #fbf0db
+            , 0 0 1px 5px #fbf0db
+            , 0 0 1vh #fbf0db;
+        }
+
+        .choices {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px;
+            opacity: 0.7;
+            transition: opacity 0.3s linear;
+        }
+
+        .card-text {
+            padding: 0.0vh 2vh;
+        }
+
+        .choice-left {
+            color: #ff0000;
+        }
+
+        .choice-right {
+            color: #00ff66;
+        }
+
+        .ignore-pointer-events {
+            pointer-events: none;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .title {
+            font-size: 3em;
+        }
+        .margin-top-1vh {
+            margin-top: 1vh;
+        }
+        .margin-top-2vh {
+            margin-top: 2vh;
+        }
+        #img-defeat {
+            background-image: url("./img/defeat.webp");
+        }
+        #screen-menu {
+            background-image: url("./img/main.webp");
+            background-size: 100%;
+            justify-content: flex-start;
+        }
+
+        .menu-title {
+            font-size: 3.5vh;
+            font-weight: 700;
+            color: #e1ecff;
+            text-shadow: 0 0 1vh #000, 0 0 2vh rgba(0, 0, 0, 0.8);
+            letter-spacing: 0.1vh;
+            margin-bottom: 8vh;
+            margin-top: 14vh;
+        }
+
+        @keyframes shineEffect {
+            0% {
+                text-shadow: 0 0 0.5vh #000, 0 0 1vh rgba(0, 0, 0, 0.7);
+                opacity: 0.8;
+            }
+            50% {
+                text-shadow: 0 0 1vh #66a3ff, 0 0 2vh rgba(102, 163, 255, 0.8);
+                opacity: 1;
+            }
+            100% {
+                text-shadow: 0 0 0.5vh #000, 0 0 1vh rgba(0, 0, 0, 0.7);
+                opacity: 0.8;
+            }
+        }
+
+        .menu-button {
+            font-size: 3vh;
+            font-weight: 400;
+            color: #e9f1ff;
+            text-shadow: 0 0 0.5vh #000, 0 0 1vh rgba(0, 0, 0, 0.7); /* Soft shadow for contrast */
+            margin-bottom: 1vh;
+            cursor: pointer;
+            transition: color 0.2s ease, text-shadow 0.2s ease;
+            opacity: 0.8;
+        }
+
+        .menu-button.inactive {
+            color: #979797;
+        }
+
+        .menu-button.shine {
+            animation: shineEffect 2.5s infinite ease-in-out;
+        }
+
+        .menu-button:hover {
+            color: #ffffff;
+            text-shadow: 0 0 1vh #66a3ff, 0 0 2vh rgba(102, 163, 255, 0.8); /* Soft blue glow on hover */
+            opacity: 1;
+        }
+        .stat-value {
+            font-family: "Roboto", sans-serif;
+        }
+        .stat-value.transition {
+            transition: color 2s linear;
+        }
+        .popup {
+            height: 100%;
+            max-width: 50vh;
+            margin: 0 auto;
+
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+
+            container-type: inline-size;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            background-color: #00000099;
+        }
+        #popup-ammo .popup-body {
+            background-image: url("./img/ad-ammo.webp");
+        }
+        #popup-money .popup-body {
+            background-image: url("./img/ad-money.webp");
+        }
+        .popup-body {
+            width: 95cqw;
+            height: 95cqw;
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        .popup-btn-cancel {
+            position: absolute;
+            top: 53%;
+            bottom: 37%;
+            left: 52%;
+            right: 25%;
+        }
+        .popup-btn-ad {
+            position: absolute;
+            top: 53%;
+            bottom: 37%;
+            left: 25%;
+            right: 52%;
+        }
+    </style>
+</head>
+<body>
+<div class="screen" id="screen-menu">
+    <div class="menu-title">I Am Cold</div>
+    <div class="menu-button inactive">continue</div>
+    <div class="menu-button shine" onclick="newGame()">new game</div>
+    <div class="menu-button inactive">settings</div>
+    <div class="menu-button inactive">quit</div>
+</div>
+<div class="screen hidden" id="screen-defeat" onclick="newGame()">
+    <div class="title">DEFEATED</div>
+    <div class="" id="defeat-reason">by cold</div>
+    <div id="img-defeat" class="card-img margin-top-2vh">
+        <div class="card-border"></div>
+    </div>
+    <div class="margin-top-1vh">You survived <span id="defeat-score">XXX</span> events...</div>
+    <div>Current best result: <span id="best-score">XXX</span></div>
+    <div class="margin-top-2vh">tap anywhere to start anew...</div>
+</div>
+<div class="screen hidden" id="screen-game">
+    <div class="stats">
+        <span>🔥<span id="heat" class="stat-value">5</span></span>
+        <span>🍗<span id="satiation" class="stat-value">5</span></span>
+        <span>💰<span id="money" class="stat-value">5</span></span>
+        <span>💣<span id="ammo" class="stat-value">5</span></span>
+    </div>
+    <div class="card-container">
+        <div class="card" id="card-invisible">
+            <div class="card-img-container">
+                <div class="card-img"></div>
+            </div>
+            <div class="card-text">&nbsp;<br/>&nbsp;</div>
+            <div class="choices">
+                <span class="choice-left">&nbsp;</span>
+                <span class="choice-right">&nbsp;</span>
+            </div>
+        </div>
+        <div class="card-container-movable">
+            <div class="card" id="card-1" style="opacity: 0;">
+                <div class="card-img-container">
+                    <div id="card-img-1" class="card-img">
+                        <div class="card-border"></div>
+                    </div>
+                </div>
+                <div id="card-text-1" class="card-text">Something went wrong.<br/>Very wrong.</div>
+                <div class="choices">
+                    <span class="choice-left" id="choice-left-1" onclick="GAME.onSwipe(SIDES.LEFT)">That's sad...</span>
+                    <span class="choice-right" id="choice-right-1" onclick="GAME.onSwipe(SIDES.RIGHT)">It's a mistake!</span>
+                </div>
+            </div>
+        </div>
+        <div class="card-container-movable">
+            <div class="card" id="card-0">
+                <div class="card-img-container">
+                    <div id="card-img-0" class="card-img">
+                        <div class="card-border"></div>
+                    </div>
+                </div>
+                <div id="card-text-0" class="card-text">Something went wrong.<br/>Very wrong.</div>
+                <div class="choices">
+                    <span class="choice-left" id="choice-left-0" onclick="GAME.onSwipe(SIDES.LEFT)">That's sad...</span>
+                    <span class="choice-right" id="choice-right-0" onclick="GAME.onSwipe(SIDES.RIGHT)">It's a mistake!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="popup hidden" id="popup-money">
+    <div class="popup-body">
+        <div class="popup-btn-ad" id="popup-btn-ad-money">&nbsp;</div>
+        <div class="popup-btn-cancel" onclick="UI.closePopups()">&nbsp;</div>
+    </div>
+</div>
+<div class="popup hidden" id="popup-ammo">
+    <div class="popup-body">
+        <div class="popup-btn-ad" id="popup-btn-ad-ammo">&nbsp;</div>
+        <div class="popup-btn-cancel" onclick="UI.closePopups()">&nbsp;</div>
+    </div>
+</div>
+
+<script>
+    const SIDES = {
+        LEFT: 0,
+        RIGHT: 1,
+    }
+
+    const CARDS = [
+        {
+            question: "The world is covered by eternal winter. Search for food or shelter?",
+            image: "start.webp",
+            choices: [
+                { text: "Food",                 dHeat: -1, dSatiation: +1, dMoney: +0, dAmmo: +0, },
+                { text: "Shelter",              dHeat: +1, dSatiation: -1, dMoney: +0, dAmmo: +0, },
+            ]
+        },
+        {
+            question: "You see a cabin across the frozen lake. Cross the ice?",
+            image: "lake.webp",
+            choices: [
+                { text: "No, too risky",        dHeat: -1, dSatiation: -1, dMoney: +0, dAmmo: +0, },
+                { text: "Yes, quickly cross",   dHeat: -2, dSatiation: +2, dMoney: +0, dAmmo: +0, },
+            ]
+        },
+        {
+            question: "You find an abandoned campfire. Rekindle it to warm up?",
+            image: "campfire.webp",
+            choices: [
+                { text: "No, keep moving",       dHeat: -2, dSatiation: -1, dMoney: +0, dAmmo: +0, },
+                { text: "Yes, rest briefly",     dHeat: +3, dSatiation: +0, dMoney: +0, dAmmo: -1, },
+            ]
+        },
+        {
+            question: "A rabbit appears from behind a bush. Shoot it for food?",
+            image: "rabbit.webp",
+            choices: [
+                { text: "Spare it",              dHeat: +0, dSatiation: -1, dMoney: +0, dAmmo: +0, },
+                { text: "Take the shot",         dHeat: +0, dSatiation: +3, dMoney: +0, dAmmo: -1, },
+            ]
+        },
+        {
+            question: "A trader offers extra ammo in exchange for money.",
+            image: "trader.webp",
+            choices: [
+                { text: "No deal",               dHeat: +0, dSatiation: +0, dMoney: +0, dAmmo: +0, },
+                { text: "Trade coins for bullets", dHeat: +0, dSatiation: +0, dMoney: -2, dAmmo: +3, },
+            ]
+        },
+        {
+            question: "You spot a frozen stream. Try to break the ice for water and fish?",
+            image: "stream.webp",
+            choices: [
+                { text: "Not worth it",          dHeat: -1, dSatiation: -1, dMoney: +0, dAmmo: +0, },
+                { text: "Break the ice",         dHeat: -3, dSatiation: +3, dMoney: +0, dAmmo: +0, },
+            ]
+        },
+        {
+            question: "An injured traveler lies on the path. Search for supplies?",
+            image: "traveler.webp",
+            choices: [
+                { text: "Leave them alone",      dHeat: +0, dSatiation: -1, dMoney: +0, dAmmo: +0, },
+                { text: "Check their belongings",dHeat: -2, dSatiation: +0, dMoney: +2, dAmmo: +1, },
+            ]
+        },
+        {
+            question: "A wolf is stalking you from a distance. Try to scare it off?",
+            image: "wolf.webp",
+            choices: [
+                { text: "Ignore it",             dHeat: +0, dSatiation: -2, dMoney: +0, dAmmo: +0, },
+                { text: "Fire a shot",           dHeat: +1, dSatiation: +0, dMoney: +0, dAmmo: -1, },
+            ]
+        },
+        {
+            question: "You find an old hunter’s trap. Reset it for potential food later?",
+            image: "trap.webp",
+            choices: [
+                { text: "Leave it alone",        dHeat: +0, dSatiation: -1, dMoney: +0, dAmmo: +0, },
+                { text: "Reset with bait",       dHeat: -1, dSatiation: +0, dMoney: +0, dAmmo: -1, },
+            ]
+        },
+        {
+            question: "A mysterious figure offers you shelter for a fee.",
+            image: "shelter.webp",
+            choices: [
+                { text: "Refuse",                dHeat: -2, dSatiation: +0, dMoney: +0, dAmmo: +0, },
+                { text: "Pay for shelter",       dHeat: +5, dSatiation: +0, dMoney: -3, dAmmo: +0, },
+            ]
+        },
+        {
+            question: "You discover a frozen deer carcass. Harvest meat from it?",
+            image: "carcass.webp",
+            choices: [
+                { text: "Leave it",              dHeat: +0, dSatiation: -1, dMoney: +0, dAmmo: +0, },
+                { text: "Harvest it",            dHeat: -2, dSatiation: +4, dMoney: +0, dAmmo: +0, },
+            ]
+        },
+        {
+            question: "A blizzard is coming. Push through or take shelter?",
+            image: "blizzard.webp",
+            choices: [
+                { text: "Push through",          dHeat: -4, dSatiation: -1, dMoney: +0, dAmmo: +0, },
+                { text: "Take shelter",          dHeat: -1, dSatiation: -2, dMoney: +0, dAmmo: +0, },
+            ]
+        },
+        {
+            question: "You find a broken sled with some supplies. Take the supplies?",
+            image: "sled.webp",
+            choices: [
+                { text: "Ignore it",             dHeat: +0, dSatiation: -1, dMoney: +0, dAmmo: +0, },
+                { text: "Take the supplies",     dHeat: -2, dSatiation: +1, dMoney: +1, dAmmo: +2, },
+            ]
+        },
+        {
+            question: "A group of travelers invites you to join their fire for a price.",
+            image: "campfire_group.webp",
+            choices: [
+                { text: "Keep moving",           dHeat: -2, dSatiation: -1, dMoney: +0, dAmmo: +0, },
+                { text: "Join them",             dHeat: +3, dSatiation: +2, dMoney: -2, dAmmo: +0, },
+            ]
+        },
+        {
+            question: "You come across a ruined building. Search for useful supplies?",
+            image: "ruins.webp",
+            choices: [
+                { text: "Too dangerous",         dHeat: +0, dSatiation: -1, dMoney: +0, dAmmo: +0, },
+                { text: "Search carefully",      dHeat: -1, dSatiation: +0, dMoney: +1, dAmmo: +1, },
+            ]
+        },
+        {
+            question: "You spot a figure approaching in the distance. Prepare to defend yourself?",
+            image: "stranger.webp",
+            choices: [
+                { text: "Hide and watch",          dHeat: -1, dSatiation: +0, dMoney: +0, dAmmo: +0, },
+                { text: "Confront them",           dHeat: -2, dSatiation: +0, dMoney: +1, dAmmo: -1, },
+            ]
+        },
+        {
+            question: "You find a frozen river blocking your path. Cross it or find another route?",
+            image: "river.webp",
+            choices: [
+                { text: "Find another route",      dHeat: -1, dSatiation: -2, dMoney: +0, dAmmo: +0, },
+                { text: "Cross directly",          dHeat: -3, dSatiation: +0, dMoney: +0, dAmmo: +0, },
+            ]
+        },
+        {
+            question: "A traveler offers to sell you supplies. Trade money for food and ammo?",
+            image: "merchant.webp",
+            choices: [
+                { text: "Decline",                 dHeat: +0, dSatiation: +0, dMoney: +0, dAmmo: +0, },
+                { text: "Trade supplies",          dHeat: +0, dSatiation: +3, dMoney: -2, dAmmo: +2, },
+            ]
+        },
+        {
+            question: "You see smoke rising in the distance. Investigate or stay away?",
+            image: "smoke.webp",
+            choices: [
+                { text: "Avoid it",                dHeat: +0, dSatiation: -1, dMoney: +0, dAmmo: +0, },
+                { text: "Investigate",             dHeat: -2, dSatiation: +0, dMoney: +2, dAmmo: +1, },
+            ]
+        },
+        {
+            question: "You find an injured animal. Help it or leave it?",
+            image: "injured_animal.webp",
+            choices: [
+                { text: "Leave it",                dHeat: +0, dSatiation: -1, dMoney: +0, dAmmo: +0, },
+                { text: "Help it",                 dHeat: -2, dSatiation: +2, dMoney: +0, dAmmo: +0, },
+            ]
+        },
+        {
+            question: "A snowstorm is coming fast. Try to find shelter or push forward?",
+            image: "snowstorm.webp",
+            choices: [
+                { text: "Find shelter",            dHeat: -1, dSatiation: -1, dMoney: +0, dAmmo: +0, },
+                { text: "Push forward",            dHeat: -3, dSatiation: -2, dMoney: +0, dAmmo: +0, },
+            ]
+        }
+    ];
+
+    class Game {
+
+        constructor () {
+            this.heat = 5;
+            this.satiation = 5;
+            this.money = 1;
+            this.ammo = 1;
+            this.score = 0;
+
+            this.currentCard = CARDS[0];
+            this.lastCards = [];
+        }
+
+        onSwipe (side) {
+            const choice = this.currentCard.choices[side];
+
+            console.log(this.currentCard.question + "\n" + choice.text);
+
+            if (this.money + choice.dMoney < 0) {
+                UI.showPopup("money", () => {
+                    const d = -choice.dMoney - this.money;
+                    this.money += d;
+                    UI.updateStats(0, 0, d, 0);
+                    UI.closePopups();
+                });
+                return;
+            }
+            if (this.ammo + choice.dAmmo < 0) {
+                UI.showPopup("ammo", () => {
+                    const d = -choice.dAmmo - this.ammo;
+                    this.ammo += d;
+                    UI.updateStats(0, 0, 0, d);
+                    UI.closePopups();
+                });
+                return;
+            }
+
+            this.heat += choice.dHeat;
+            this.satiation += choice.dSatiation;
+            this.money += choice.dMoney;
+            this.ammo += choice.dAmmo;
+            UI.updateStats(choice.dHeat, choice.dSatiation, choice.dMoney, choice.dAmmo);
+            UI.hideCurrentCard();
+            this.currentCard = this.drawNextCard();
+            UI.revealCurrentCard();
+
+            if (this.heat <= 0 || this.satiation <= 0) {
+
+                let reason = "";
+                if (this.heat <= 0 && this.satiation <= 0) reason = "by cold and hunger";
+                else if (this.heat <= 0) reason = "by cold";
+                else reason = "by hunger";
+                document.getElementById("defeat-reason").innerHTML = reason;
+
+                document.getElementById("defeat-score").innerHTML = this.score;
+
+                if (this.score > BEST_SCORE) BEST_SCORE = this.score;
+                document.getElementById("best-score").innerHTML = BEST_SCORE.toFixed(0);
+
+                UI.eventAbortController.abort();
+
+                UI.showScreen("screen-defeat");
+            } else this.score ++;
+        }
+
+        drawNextCard() {
+            // Leave only the last 3 elements
+            this.lastCards = this.lastCards.slice(-3);
+            const possibleNextCards = CARDS.filter((_, index) => !this.lastCards.includes(index));
+            const nextCard = possibleNextCards[ Math.floor(Math.random() * possibleNextCards.length) ];
+            this.lastCards.push(CARDS.indexOf(nextCard));
+            this.lastCards = this.lastCards.slice(-3);
+            return nextCard;
+        }
+    }
+
+    class UserInterface {
+
+        constructor () {
+            // Will be switched for 0 after the initial calling revealCurrentCard()
+            this.currentCardPostfix = 1;
+            // Ensure the card-1 goes before card-0 element (it's hidden behind it).
+            document.getElementById("card-1").parentElement.after(document.getElementById("card-0").parentElement);
+
+            this.startX = null;
+            this.currentX = null;
+            this.updateStats();
+
+            this.eventAbortController = new AbortController();
+        }
+
+        updateStats (dHeat = 0, dSatiation = 0, dMoney = 0, dAmmo = 0) {
+
+            const colourIncrease = "#00ff00";
+            const colourDecrease = "#ff0000";
+            const colourDefault = "#ffffff";
+
+            const setColour = (elId, value, delta) => {
+                let el = document.getElementById(elId);
+                el.innerHTML = value;
+                el.classList.remove("transition");
+                el.style["color"] = delta > 0 ? colourIncrease : (delta < 0 ? colourDecrease : colourDefault);
+
+                // Force reflow in case if the page doesn't register the colour change
+                document.body.offsetHeight;
+
+                setTimeout(() => {
+                    el.classList.add("transition");
+                    el.style["color"] = colourDefault;
+                }, 10);
+            }
+
+            setColour("heat", GAME.heat, dHeat);
+            setColour("satiation", GAME.satiation, dSatiation);
+            setColour("money", GAME.money, dMoney);
+            setColour("ammo", GAME.ammo, dAmmo);
+        }
+
+        resetCardPosition() {
+            const elCurrentCard = document.getElementById("card-" + this.currentCardPostfix);
+            elCurrentCard.classList.add("pos-transition");
+            elCurrentCard.style.transform = `translateX(0px) rotate(0deg)`;
+        }
+
+        onTouchStart(e) {
+            this.startX = e.touches[0].clientX;
+            const elCurrentCard = document.getElementById("card-" + this.currentCardPostfix);
+            elCurrentCard.classList.remove("pos-transition");
+        }
+
+        onTouchMove(e) {
+            this.currentX = e.touches[0].clientX;
+            this.handleSwipeMove();
+        }
+
+        onTouchEnd(e) {
+            this.handleSwipeEnd();
+        }
+
+        onMouseStart(e) {
+            this.startX = e.clientX;
+            const elCurrentCard = document.getElementById("card-" + this.currentCardPostfix);
+            elCurrentCard.classList.remove("pos-transition");
+        }
+
+        onMouseMove(e) {
+            this.currentX = e.clientX;
+            this.handleSwipeMove();
+        }
+
+        onMouseEnd(e) {
+            this.handleSwipeEnd();
+        }
+
+        handleSwipeMove() {
+            const diffX = this.currentX - this.startX;
+            const swipeThreshold = this.swipeThreshold();
+            const rotation = diffX / (swipeThreshold * 0.1);
+            const elCurrentCard = document.getElementById("card-" + this.currentCardPostfix);
+            elCurrentCard.style.transform = `translateX(${diffX}px) rotate(${rotation}deg)`;
+
+            document.getElementById("choice-right-" + this.currentCardPostfix).style['opacity'] =
+                (diffX > swipeThreshold ? 1 : 0.7).toString();
+            document.getElementById("choice-left-" + this.currentCardPostfix).style['opacity'] =
+                (diffX < -swipeThreshold ? 1 : 0.7).toString();
+        }
+
+        handleSwipeEnd() {
+            const swipeThreshold = this.swipeThreshold();
+            if (this.currentX === null) this.currentX = this.startX;
+            const diffX = this.currentX - this.startX;
+
+            if (diffX > swipeThreshold) {
+                GAME.onSwipe(SIDES.RIGHT);
+            } else if (diffX < -swipeThreshold) {
+                GAME.onSwipe(SIDES.LEFT);
+            } else {
+                this.resetCardPosition();
+            }
+
+            this.startX = null;
+            this.currentX = null;
+
+            // Remove event listeners for mouse
+            window.removeEventListener("mousemove", this.boundMouseMove);
+            window.removeEventListener("mouseup", this.boundMouseEnd);
+        }
+
+        swipeThreshold() {
+            return 0.1 * window.innerHeight;
+        }
+
+        revealCurrentCard() {
+            // Toggle which card HTML element is active.
+            this.currentCardPostfix = 1 - this.currentCardPostfix;
+
+            // Abort any previously registered event listeners (cleanup)
+            if (this.eventAbortController) {
+                this.eventAbortController.abort();
+            }
+
+            // Fill the info: image, texts.
+            let card = GAME.currentCard;
+            document.getElementById("card-img-" + this.currentCardPostfix).style["background-image"] = `url('./img/cards/${ card.image }')`;
+            document.getElementById("card-text-" + this.currentCardPostfix).innerHTML = card.question;
+            document.getElementById("choice-left-" + this.currentCardPostfix).innerHTML = card.choices[SIDES.LEFT].text;
+            document.getElementById("choice-right-" + this.currentCardPostfix).innerHTML = card.choices[SIDES.RIGHT].text;
+
+            // Activate the pointer events.
+            const elCurrentCard = document.getElementById("card-" + this.currentCardPostfix);
+            this.eventAbortController = new AbortController();
+            const { signal } = this.eventAbortController;
+
+            // Clean up global mouse handlers
+            window.removeEventListener("mousemove", this.boundMouseMove);
+            window.removeEventListener("mouseup", this.boundMouseEnd);
+
+            // Register touch events
+            elCurrentCard.addEventListener("touchstart", e => this.onTouchStart(e), { signal });
+            elCurrentCard.addEventListener("touchmove", e => this.onTouchMove(e), { signal });
+            elCurrentCard.addEventListener("touchend", e => this.onTouchEnd(e), { signal });
+
+            // Register mouse events
+            elCurrentCard.addEventListener("mousedown", e => {
+                this.onMouseStart(e);
+                this.boundMouseMove = this.onMouseMove.bind(this);
+                this.boundMouseEnd = this.onMouseEnd.bind(this);
+                window.addEventListener("mousemove", this.boundMouseMove);
+                window.addEventListener("mouseup", this.boundMouseEnd);
+            }, { signal });
+
+            elCurrentCard.parentElement.classList.remove("ignore-pointer-events");
+
+            // Reset the card element state: position, opacity.
+            elCurrentCard.style.transform = 'translateX(0px) rotate(0deg)';
+            elCurrentCard.style["opacity"] = "1";
+            document.getElementById("choice-right-" + this.currentCardPostfix).style['opacity'] = "0.7";
+            document.getElementById("choice-left-" + this.currentCardPostfix).style['opacity'] = "0.7";
+        }
+
+        hideCurrentCard() {
+            // Hide the current card
+            const elCurrentCard = document.getElementById("card-" + this.currentCardPostfix);
+            elCurrentCard.style["opacity"] = "0";
+            elCurrentCard.parentElement.classList.add("ignore-pointer-events");
+
+            // Abort event listeners properly
+            if (this.eventAbortController) {
+                this.eventAbortController.abort();
+            }
+
+            // Remove global mouse handlers
+            window.removeEventListener("mousemove", this.boundMouseMove);
+            window.removeEventListener("mouseup", this.boundMouseEnd);
+
+            setTimeout(() => {
+                UI.moveCardBack(elCurrentCard);
+            }, 500);
+        }
+
+        moveCardBack(elCurrentCard) {
+            const elCardInvisible = document.getElementById("card-invisible");
+            elCardInvisible.after(elCurrentCard.parentElement);
+        }
+
+        showScreen(screenId) {
+            const elScreens = document.getElementsByClassName("screen");
+            for (let i = 0; i < elScreens.length; i++) {
+                const elScreen = elScreens.item(i);
+                elScreen.classList.toggle("hidden", elScreen.getAttribute("id") !== screenId);
+            }
+        }
+
+        closePopups() {
+            const elPopups = document.getElementsByClassName("popup");
+            for (let i = 0; i < elPopups.length; i++) {
+                const elPopup = elPopups.item(i);
+                elPopup.classList.add("hidden");
+            }
+            // Clean up the popup handler
+            if (this.popupHandler) {
+                const elAdBtns = document.querySelectorAll(".popup-btn-ad");
+                elAdBtns.forEach((elAdBtn) => {
+                    elAdBtn.removeEventListener("click", this.popupHandler);
+                });
+                this.popupHandler = null;
+            }
+        }
+
+        showPopup(type, callback) {
+            const elAdBtn = document.getElementById("popup-btn-ad-" + type);
+            // Remove any existing handler first (if any) to prevent duplicates
+            if (this.popupHandler) {
+                elAdBtn.removeEventListener("click", this.popupHandler);
+            }
+            // Store the handler reference so it can be removed later
+            this.popupHandler = callback;
+            elAdBtn.addEventListener("click", this.popupHandler, { once: true });
+
+            const elPopup = document.getElementById("popup-" + type);
+            elPopup.classList.remove("hidden");
+            this.resetCardPosition();
+        }
+    }
+
+    // TODO Persistent score
+    let BEST_SCORE = 0;
+
+    let GAME = null;
+    let UI = null;
+
+    function newGame() {
+        GAME = new Game();
+        UI = new UserInterface();
+        UI.revealCurrentCard();
+        UI.showScreen("screen-game");
+    }
+</script>
+</body>
+</html>
