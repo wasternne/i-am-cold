@@ -274,6 +274,12 @@
             left: 25%;
             right: 52%;
         }
+        .footer {
+            flex-grow: 3;
+        }
+        .header {
+            flex-grow: 1;
+        }
     </style>
 </head>
 <body>
@@ -295,6 +301,7 @@
     <div class="margin-top-2vh">tap anywhere to start anew...</div>
 </div>
 <div class="screen hidden" id="screen-game">
+    <div class="header"></div>
     <div class="stats">
         <span>🔥<span id="heat" class="stat-value">5</span></span>
         <span>🍗<span id="satiation" class="stat-value">5</span></span>
@@ -306,7 +313,7 @@
             <div class="card-img-container">
                 <div class="card-img"></div>
             </div>
-            <div class="card-text">&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;</div>
+            <div class="card-text">&nbsp;<br/>&nbsp;</div>
             <div class="choices">
                 <span class="choice-left">&nbsp;</span>
                 <span class="choice-right">&nbsp;</span>
@@ -341,6 +348,7 @@
             </div>
         </div>
     </div>
+    <div class="footer"></div>
 </div>
 <div class="popup hidden" id="popup-money">
     <div class="popup-body">
