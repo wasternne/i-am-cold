@@ -164,7 +164,7 @@
             margin-top: 2vh;
         }
         #img-defeat {
-            background-image: url("./img/defeat.webp");
+            background-image: url("./img/defeat.gif");
         }
         #screen-menu {
             background-image: url("./img/main.webp");
@@ -372,7 +372,7 @@
     const CARDS = [
         {
             question: "The world is covered by eternal winter. Search for food or shelter?",
-            image: "start.webp",
+            image: "start.gif",
             choices: [
                 { text: "Food",                 dHeat: -1, dSatiation: +1, dMoney: +0, dAmmo: +0, },
                 { text: "Shelter",              dHeat: +1, dSatiation: -1, dMoney: +0, dAmmo: +0, },
@@ -380,7 +380,7 @@
         },
         {
             question: "You see a cabin across the frozen lake. Cross the ice?",
-            image: "lake.webp",
+            image: "lake.gif",
             choices: [
                 { text: "No, too risky",        dHeat: -1, dSatiation: -1, dMoney: +0, dAmmo: +0, },
                 { text: "Yes, quickly cross",   dHeat: -2, dSatiation: +2, dMoney: +0, dAmmo: +0, },
@@ -388,7 +388,7 @@
         },
         {
             question: "You find an abandoned campfire. Rekindle it to warm up?",
-            image: "campfire.webp",
+            image: "campfire.gif",
             choices: [
                 { text: "No, keep moving",       dHeat: -2, dSatiation: -1, dMoney: +0, dAmmo: +0, },
                 { text: "Yes, rest briefly",     dHeat: +3, dSatiation: +0, dMoney: +0, dAmmo: -1, },
@@ -396,7 +396,7 @@
         },
         {
             question: "A rabbit appears from behind a bush. Shoot it for food?",
-            image: "rabbit.webp",
+            image: "rabbit.gif",
             choices: [
                 { text: "Spare it",              dHeat: +0, dSatiation: -1, dMoney: +0, dAmmo: +0, },
                 { text: "Take the shot",         dHeat: +0, dSatiation: +3, dMoney: +0, dAmmo: -1, },
@@ -404,7 +404,7 @@
         },
         {
             question: "A trader offers extra ammo in exchange for money.",
-            image: "trader.webp",
+            image: "trader.gif",
             choices: [
                 { text: "No deal",               dHeat: +0, dSatiation: +0, dMoney: +0, dAmmo: +0, },
                 { text: "Trade coins for bullets", dHeat: +0, dSatiation: +0, dMoney: -2, dAmmo: +3, },
@@ -412,7 +412,7 @@
         },
         {
             question: "You spot a frozen stream. Try to break the ice for water and fish?",
-            image: "stream.webp",
+            image: "stream.gif",
             choices: [
                 { text: "Not worth it",          dHeat: -1, dSatiation: -1, dMoney: +0, dAmmo: +0, },
                 { text: "Break the ice",         dHeat: -3, dSatiation: +3, dMoney: +0, dAmmo: +0, },
@@ -428,7 +428,7 @@
         },
         {
             question: "A wolf is stalking you from a distance. Try to scare it off?",
-            image: "wolf.webp",
+            image: "wolf.gif",
             choices: [
                 { text: "Ignore it",             dHeat: +0, dSatiation: -2, dMoney: +0, dAmmo: +0, },
                 { text: "Fire a shot",           dHeat: +1, dSatiation: +0, dMoney: +0, dAmmo: -1, },
@@ -444,7 +444,7 @@
         },
         {
             question: "A mysterious figure offers you shelter for a fee.",
-            image: "shelter.webp",
+            image: "shelter.gif",
             choices: [
                 { text: "Refuse",                dHeat: -2, dSatiation: +0, dMoney: +0, dAmmo: +0, },
                 { text: "Pay for shelter",       dHeat: +5, dSatiation: +0, dMoney: -3, dAmmo: +0, },
@@ -460,7 +460,7 @@
         },
         {
             question: "A blizzard is coming. Push through or take shelter?",
-            image: "blizzard.webp",
+            image: "blizzard.gif",
             choices: [
                 { text: "Push through",          dHeat: -4, dSatiation: -1, dMoney: +0, dAmmo: +0, },
                 { text: "Take shelter",          dHeat: -1, dSatiation: -2, dMoney: +0, dAmmo: +0, },
@@ -468,7 +468,7 @@
         },
         {
             question: "You find a broken sled with some supplies. Take the supplies?",
-            image: "sled.webp",
+            image: "sled.gif",
             choices: [
                 { text: "Ignore it",             dHeat: +0, dSatiation: -1, dMoney: +0, dAmmo: +0, },
                 { text: "Take the supplies",     dHeat: -2, dSatiation: +1, dMoney: +1, dAmmo: +2, },
@@ -476,7 +476,7 @@
         },
         {
             question: "A group of travelers invites you to join their fire for a price.",
-            image: "campfire_group.webp",
+            image: "campfire_group.gif",
             choices: [
                 { text: "Keep moving",           dHeat: -2, dSatiation: -1, dMoney: +0, dAmmo: +0, },
                 { text: "Join them",             dHeat: +3, dSatiation: +2, dMoney: -2, dAmmo: +0, },
@@ -500,7 +500,7 @@
         },
         {
             question: "You find a frozen river blocking your path. Cross it or find another route?",
-            image: "river.webp",
+            image: "river.gif",
             choices: [
                 { text: "Find another route",      dHeat: -1, dSatiation: -2, dMoney: +0, dAmmo: +0, },
                 { text: "Cross directly",          dHeat: -3, dSatiation: +0, dMoney: +0, dAmmo: +0, },
@@ -508,7 +508,7 @@
         },
         {
             question: "A traveler offers to sell you supplies. Trade money for food and ammo?",
-            image: "merchant.webp",
+            image: "merchant.gif",
             choices: [
                 { text: "Decline",                 dHeat: +0, dSatiation: +0, dMoney: +0, dAmmo: +0, },
                 { text: "Trade supplies",          dHeat: +0, dSatiation: +3, dMoney: -2, dAmmo: +2, },
@@ -516,7 +516,7 @@
         },
         {
             question: "You see smoke rising in the distance. Investigate or stay away?",
-            image: "smoke.webp",
+            image: "smoke.gif",
             choices: [
                 { text: "Avoid it",                dHeat: +0, dSatiation: -1, dMoney: +0, dAmmo: +0, },
                 { text: "Investigate",             dHeat: -2, dSatiation: +0, dMoney: +2, dAmmo: +1, },
@@ -532,7 +532,7 @@
         },
         {
             question: "A snowstorm is coming fast. Try to find shelter or push forward?",
-            image: "snowstorm.webp",
+            image: "snowstorm.gif",
             choices: [
                 { text: "Find shelter",            dHeat: -1, dSatiation: -1, dMoney: +0, dAmmo: +0, },
                 { text: "Push forward",            dHeat: -3, dSatiation: -2, dMoney: +0, dAmmo: +0, },
