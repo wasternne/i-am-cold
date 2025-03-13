@@ -290,7 +290,7 @@
     <div class="menu-button inactive">settings</div>
     <div class="menu-button inactive">quit</div>
 </div>
-<div class="screen hidden" id="screen-defeat" onclick="newGame()">
+<div class="screen hidden" id="screen-defeat" onclick="UI.showScreen('screen-menu')">
     <div class="title">DEFEATED</div>
     <div class="" id="defeat-reason">by cold</div>
     <div id="img-defeat" class="card-img margin-top-2vh">
@@ -298,7 +298,7 @@
     </div>
     <div class="margin-top-1vh">You survived <span id="defeat-score">XXX</span> events...</div>
     <div>Current best result: <span id="best-score">XXX</span></div>
-    <div class="margin-top-2vh">tap anywhere to start anew...</div>
+    <div class="margin-top-2vh">tap anywhere...</div>
 </div>
 <div class="screen hidden" id="screen-game">
     <div class="header"></div>
@@ -373,46 +373,115 @@
         {
             question: "The world is covered by eternal winter. Search for food or shelter?",
             image: "start.gif",
+            enabledInScenario: true,
             choices: [
                 { text: "Food",                 dHeat: -1, dSatiation: +1, dMoney: +0, dAmmo: +0, },
                 { text: "Shelter",              dHeat: +1, dSatiation: -1, dMoney: +0, dAmmo: +0, },
             ]
         },
         {
-            question: "You see a cabin across the frozen lake. Cross the ice?",
-            image: "lake.gif",
+            question: "You see smoke rising in the distance. Investigate or stay away?",
+            image: "smoke.gif",
+            enabledInScenario: true,
             choices: [
-                { text: "No, too risky",        dHeat: -1, dSatiation: -1, dMoney: +0, dAmmo: +0, },
-                { text: "Yes, quickly cross",   dHeat: -2, dSatiation: +2, dMoney: +0, dAmmo: +0, },
+                { text: "Avoid it",                dHeat: +0, dSatiation: -1, dMoney: +0, dAmmo: +0, },
+                { text: "Investigate",             dHeat: -2, dSatiation: +0, dMoney: +2, dAmmo: +1, },
             ]
         },
         {
             question: "You find an abandoned campfire. Rekindle it to warm up?",
             image: "campfire.gif",
+            enabledInScenario: true,
             choices: [
                 { text: "No, keep moving",       dHeat: -2, dSatiation: -1, dMoney: +0, dAmmo: +0, },
                 { text: "Yes, rest briefly",     dHeat: +3, dSatiation: +0, dMoney: +0, dAmmo: -1, },
             ]
         },
         {
-            question: "A rabbit appears from behind a bush. Shoot it for food?",
-            image: "rabbit.gif",
+            question: "You find a broken sled with some supplies. Take the supplies?",
+            image: "sled.gif",
+            enabledInScenario: true,
             choices: [
-                { text: "Spare it",              dHeat: +0, dSatiation: -1, dMoney: +0, dAmmo: +0, },
-                { text: "Take the shot",         dHeat: +0, dSatiation: +3, dMoney: +0, dAmmo: -1, },
+                { text: "Ignore it",             dHeat: +0, dSatiation: -1, dMoney: +0, dAmmo: +0, },
+                { text: "Take the supplies",     dHeat: -2, dSatiation: +1, dMoney: +1, dAmmo: +2, },
+            ]
+        },
+        {
+            question: "A wolf is stalking you from a distance. Try to scare it off?",
+            image: "wolf.gif",
+            enabledInScenario: true,
+            choices: [
+                { text: "Ignore it",             dHeat: +0, dSatiation: -2, dMoney: +0, dAmmo: +0, },
+                { text: "Fire a shot",           dHeat: +1, dSatiation: +0, dMoney: +0, dAmmo: -1, },
             ]
         },
         {
             question: "A trader offers extra ammo in exchange for money.",
             image: "trader.gif",
+            enabledInScenario: true,
             choices: [
                 { text: "No deal",               dHeat: +0, dSatiation: +0, dMoney: +0, dAmmo: +0, },
                 { text: "Trade coins for bullets", dHeat: +0, dSatiation: +0, dMoney: -2, dAmmo: +3, },
             ]
         },
         {
+            question: "A mysterious figure offers you shelter for a fee.",
+            image: "shelter.gif",
+            enabledInScenario: true,
+            choices: [
+                { text: "Refuse",                dHeat: -2, dSatiation: +0, dMoney: +0, dAmmo: +0, },
+                { text: "Pay for shelter",       dHeat: +5, dSatiation: +0, dMoney: -3, dAmmo: +0, },
+            ]
+        },
+        {
+            question: "A rabbit appears from behind a bush. Shoot it for food?",
+            image: "rabbit.gif",
+            enabledInScenario: true,
+            choices: [
+                { text: "Spare it",              dHeat: +0, dSatiation: -1, dMoney: +0, dAmmo: +0, },
+                { text: "Take the shot",         dHeat: +0, dSatiation: +3, dMoney: +0, dAmmo: -1, },
+            ]
+        },
+        {
+            question: "You see a cabin across the frozen lake. Cross the ice?",
+            image: "lake.gif",
+            enabledInScenario: true,
+            choices: [
+                { text: "No, too risky",        dHeat: -1, dSatiation: -1, dMoney: +0, dAmmo: +0, },
+                { text: "Yes, quickly cross",   dHeat: -2, dSatiation: +2, dMoney: +0, dAmmo: +0, },
+            ]
+        },
+        {
+            question: "A group of travelers invites you to join their fire for a price.",
+            image: "campfire_group.gif",
+            enabledInScenario: true,
+            choices: [
+                { text: "Keep moving",           dHeat: -2, dSatiation: -1, dMoney: +0, dAmmo: +0, },
+                { text: "Join them",             dHeat: +3, dSatiation: +2, dMoney: -2, dAmmo: +0, },
+            ]
+        },
+        {
+            question: "A traveler offers to sell you supplies. Trade money for food and ammo?",
+            image: "merchant.gif",
+            enabledInScenario: true,
+            choices: [
+                { text: "Decline",                 dHeat: +0, dSatiation: +0, dMoney: +0, dAmmo: +0, },
+                { text: "Trade supplies",          dHeat: +0, dSatiation: +3, dMoney: -2, dAmmo: +2, },
+            ]
+        },
+        {
+            question: "A blizzard is coming. Push through or take shelter?",
+            image: "blizzard.gif",
+            enabledInScenario: true,
+            choices: [
+                { text: "Push through",          dHeat: -4, dSatiation: -1, dMoney: +0, dAmmo: +0, },
+                { text: "Take shelter",          dHeat: -1, dSatiation: -2, dMoney: +0, dAmmo: +0, },
+            ]
+        },
+        {
             question: "You spot a frozen stream. Try to break the ice for water and fish?",
             image: "stream.gif",
+            enabledInScenario: false,
             choices: [
                 { text: "Not worth it",          dHeat: -1, dSatiation: -1, dMoney: +0, dAmmo: +0, },
                 { text: "Break the ice",         dHeat: -3, dSatiation: +3, dMoney: +0, dAmmo: +0, },
@@ -421,70 +490,34 @@
         {
             question: "An injured traveler lies on the path. Search for supplies?",
             image: "traveler.webp",
+            enabledInScenario: false,
             choices: [
                 { text: "Leave them alone",      dHeat: +0, dSatiation: -1, dMoney: +0, dAmmo: +0, },
                 { text: "Check their belongings",dHeat: -2, dSatiation: +0, dMoney: +2, dAmmo: +1, },
             ]
         },
         {
-            question: "A wolf is stalking you from a distance. Try to scare it off?",
-            image: "wolf.gif",
-            choices: [
-                { text: "Ignore it",             dHeat: +0, dSatiation: -2, dMoney: +0, dAmmo: +0, },
-                { text: "Fire a shot",           dHeat: +1, dSatiation: +0, dMoney: +0, dAmmo: -1, },
-            ]
-        },
-        {
             question: "You find an old hunter’s trap. Reset it for potential food later?",
             image: "trap.webp",
+            enabledInScenario: false,
             choices: [
                 { text: "Leave it alone",        dHeat: +0, dSatiation: -1, dMoney: +0, dAmmo: +0, },
                 { text: "Reset with bait",       dHeat: -1, dSatiation: +0, dMoney: +0, dAmmo: -1, },
             ]
         },
         {
-            question: "A mysterious figure offers you shelter for a fee.",
-            image: "shelter.gif",
-            choices: [
-                { text: "Refuse",                dHeat: -2, dSatiation: +0, dMoney: +0, dAmmo: +0, },
-                { text: "Pay for shelter",       dHeat: +5, dSatiation: +0, dMoney: -3, dAmmo: +0, },
-            ]
-        },
-        {
             question: "You discover a frozen deer carcass. Harvest meat from it?",
             image: "carcass.webp",
+            enabledInScenario: false,
             choices: [
                 { text: "Leave it",              dHeat: +0, dSatiation: -1, dMoney: +0, dAmmo: +0, },
                 { text: "Harvest it",            dHeat: -2, dSatiation: +4, dMoney: +0, dAmmo: +0, },
             ]
         },
         {
-            question: "A blizzard is coming. Push through or take shelter?",
-            image: "blizzard.gif",
-            choices: [
-                { text: "Push through",          dHeat: -4, dSatiation: -1, dMoney: +0, dAmmo: +0, },
-                { text: "Take shelter",          dHeat: -1, dSatiation: -2, dMoney: +0, dAmmo: +0, },
-            ]
-        },
-        {
-            question: "You find a broken sled with some supplies. Take the supplies?",
-            image: "sled.gif",
-            choices: [
-                { text: "Ignore it",             dHeat: +0, dSatiation: -1, dMoney: +0, dAmmo: +0, },
-                { text: "Take the supplies",     dHeat: -2, dSatiation: +1, dMoney: +1, dAmmo: +2, },
-            ]
-        },
-        {
-            question: "A group of travelers invites you to join their fire for a price.",
-            image: "campfire_group.gif",
-            choices: [
-                { text: "Keep moving",           dHeat: -2, dSatiation: -1, dMoney: +0, dAmmo: +0, },
-                { text: "Join them",             dHeat: +3, dSatiation: +2, dMoney: -2, dAmmo: +0, },
-            ]
-        },
-        {
             question: "You come across a ruined building. Search for useful supplies?",
             image: "ruins.webp",
+            enabledInScenario: false,
             choices: [
                 { text: "Too dangerous",         dHeat: +0, dSatiation: -1, dMoney: +0, dAmmo: +0, },
                 { text: "Search carefully",      dHeat: -1, dSatiation: +0, dMoney: +1, dAmmo: +1, },
@@ -493,6 +526,7 @@
         {
             question: "You spot a figure approaching in the distance. Prepare to defend yourself?",
             image: "stranger.webp",
+            enabledInScenario: false,
             choices: [
                 { text: "Hide and watch",          dHeat: -1, dSatiation: +0, dMoney: +0, dAmmo: +0, },
                 { text: "Confront them",           dHeat: -2, dSatiation: +0, dMoney: +1, dAmmo: -1, },
@@ -501,30 +535,16 @@
         {
             question: "You find a frozen river blocking your path. Cross it or find another route?",
             image: "river.gif",
+            enabledInScenario: false,
             choices: [
                 { text: "Find another route",      dHeat: -1, dSatiation: -2, dMoney: +0, dAmmo: +0, },
                 { text: "Cross directly",          dHeat: -3, dSatiation: +0, dMoney: +0, dAmmo: +0, },
             ]
         },
         {
-            question: "A traveler offers to sell you supplies. Trade money for food and ammo?",
-            image: "merchant.gif",
-            choices: [
-                { text: "Decline",                 dHeat: +0, dSatiation: +0, dMoney: +0, dAmmo: +0, },
-                { text: "Trade supplies",          dHeat: +0, dSatiation: +3, dMoney: -2, dAmmo: +2, },
-            ]
-        },
-        {
-            question: "You see smoke rising in the distance. Investigate or stay away?",
-            image: "smoke.gif",
-            choices: [
-                { text: "Avoid it",                dHeat: +0, dSatiation: -1, dMoney: +0, dAmmo: +0, },
-                { text: "Investigate",             dHeat: -2, dSatiation: +0, dMoney: +2, dAmmo: +1, },
-            ]
-        },
-        {
             question: "You find an injured animal. Help it or leave it?",
             image: "injured_animal.webp",
+            enabledInScenario: false,
             choices: [
                 { text: "Leave it",                dHeat: +0, dSatiation: -1, dMoney: +0, dAmmo: +0, },
                 { text: "Help it",                 dHeat: -2, dSatiation: +2, dMoney: +0, dAmmo: +0, },
@@ -533,6 +553,7 @@
         {
             question: "A snowstorm is coming fast. Try to find shelter or push forward?",
             image: "snowstorm.gif",
+            enabledInScenario: false,
             choices: [
                 { text: "Find shelter",            dHeat: -1, dSatiation: -1, dMoney: +0, dAmmo: +0, },
                 { text: "Push forward",            dHeat: -3, dSatiation: -2, dMoney: +0, dAmmo: +0, },
@@ -543,14 +564,14 @@
     class Game {
 
         constructor () {
-            this.heat = 5;
+            this.heat = 3;
             this.satiation = 5;
             this.money = 1;
             this.ammo = 1;
             this.score = 0;
 
             this.currentCard = CARDS[0];
-            this.lastCards = [];
+            this.lastCards = [0];
         }
 
         onSwipe (side) {
@@ -583,8 +604,6 @@
             this.ammo += choice.dAmmo;
             UI.updateStats(choice.dHeat, choice.dSatiation, choice.dMoney, choice.dAmmo);
             UI.hideCurrentCard();
-            this.currentCard = this.drawNextCard();
-            UI.revealCurrentCard();
 
             if (this.heat <= 0 || this.satiation <= 0) {
 
@@ -602,17 +621,32 @@
                 UI.eventAbortController.abort();
 
                 UI.showScreen("screen-defeat");
-            } else this.score ++;
+            } else {
+                this.score ++;
+                this.currentCard = this.drawNextCard(/*true*/); // True turns on the story mode for AD making.
+                UI.revealCurrentCard();
+            }
         }
 
-        drawNextCard() {
-            // Leave only the last 3 elements
-            this.lastCards = this.lastCards.slice(-3);
-            const possibleNextCards = CARDS.filter((_, index) => !this.lastCards.includes(index));
-            const nextCard = possibleNextCards[ Math.floor(Math.random() * possibleNextCards.length) ];
-            this.lastCards.push(CARDS.indexOf(nextCard));
-            this.lastCards = this.lastCards.slice(-3);
-            return nextCard;
+        drawNextCard(scenarioMode = false) {
+            if (scenarioMode) {
+                for (let ci = 0; ci < CARDS.length; ci++) {
+                    if (this.lastCards.includes(ci)) continue;
+                    const card = CARDS[ci];
+                    if (card.enabledInScenario) {
+                        this.lastCards.push(ci);
+                        return card;
+                    }
+                }
+            } else {
+                // Leave only the last 3 elements
+                this.lastCards = this.lastCards.slice(-3);
+                const possibleNextCards = CARDS.filter((_, index) => !this.lastCards.includes(index));
+                const nextCard = possibleNextCards[ Math.floor(Math.random() * possibleNextCards.length) ];
+                this.lastCards.push(CARDS.indexOf(nextCard));
+                this.lastCards = this.lastCards.slice(-3);
+                return nextCard;
+            }
         }
     }
 
