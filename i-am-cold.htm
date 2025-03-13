@@ -732,6 +732,35 @@
             return 0.1 * window.innerHeight;
         }
 
+        typewriterEffect(elementId, text, speed = 25) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = '';
+
+            const visibleSpan = document.createElement('span');
+            const hiddenSpan = document.createElement('span');
+
+            visibleSpan.style.color = '#fff'; // Regular visible color
+            hiddenSpan.style.color = 'transparent'; // Same as background to keep fixed size
+
+            hiddenSpan.textContent = text;
+
+            element.appendChild(visibleSpan);
+            element.appendChild(hiddenSpan);
+
+            let i = 0;
+
+            const typing = () => {
+                if (i < text.length) {
+                    visibleSpan.textContent += text.charAt(i);
+                    hiddenSpan.textContent = text.slice(i + 1);
+                    i++;
+                    setTimeout(typing, (0.75 + Math.random() / 2) * speed);
+                }
+            };
+
+            typing();
+        }
+
         revealCurrentCard() {
             // Toggle which card HTML element is active.
             this.currentCardPostfix = 1 - this.currentCardPostfix;
@@ -744,7 +773,10 @@
             // Fill the info: image, texts.
             let card = GAME.currentCard;
             document.getElementById("card-img-" + this.currentCardPostfix).style["background-image"] = `url('./img/cards/${ card.image }')`;
-            document.getElementById("card-text-" + this.currentCardPostfix).innerHTML = card.question;
+
+            /*document.getElementById("card-text-" + this.currentCardPostfix).innerHTML = card.question;*/
+            this.typewriterEffect(`card-text-${this.currentCardPostfix}`, card.question);
+
             document.getElementById("choice-left-" + this.currentCardPostfix).innerHTML = card.choices[SIDES.LEFT].text;
             document.getElementById("choice-right-" + this.currentCardPostfix).innerHTML = card.choices[SIDES.RIGHT].text;
 
